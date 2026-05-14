@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from .multivariate import generate_synthetic_data, calculate_pca_urgency
 from .rlhf_engine import optimize_preferences, get_current_weights # <-- NUEVA IMPORTACIÓN
+from .clustering import detect_anomalies # <-- NUEVA IMPORTACIÓN
 
 app = FastAPI(title="Cognitive Treasury API", version="1.0")
 
@@ -50,4 +51,16 @@ def capture_decision_footprint(decision_data: dict):
         "status": "Feedback procesado y modelo ajustado", 
         "vector_recorded": True,
         "new_policy": new_weights
+    }
+# --- RUTA PARA AUDITORÍA Y CLUSTERING ---
+@app.get("/api/audit-anomalies")
+def get_audit_anomalies():
+    """Ejecuta el pipeline de Explainable AI (XAI) y Clustering."""
+    resultados = detect_anomalies()
+    pesos_actuales = get_current_weights()
+    
+    return {
+        "status": "Auditoría completada",
+        "clustering": resultados,
+        "current_policy_weights": pesos_actuales
     }

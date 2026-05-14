@@ -1,15 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import ImpactBoard from "./components/ImpactBoard";
-import Calendar from "./components/Calendar"; // <-- IMPORTACIÓN DEL COMPONENTE REAL
+import Calendar from "./components/Calendar";
+import AuditBoard from "./components/AuditBoard"; // <-- NUEVA IMPORTACIÓN
 
 // Mantenemos Auditoria como placeholder hasta la Fase 3
-const Auditoria = () => (
-  <div className="p-8">
-    <h1 className="text-2xl font-bold">Trazabilidad de IA</h1>
-    <p>En desarrollo (Fase 3)...</p>
-  </div>
-);
-
 function App() {
   return (
     <Router>
@@ -45,9 +39,9 @@ function App() {
         <main className="flex-1 bg-gray-50 overflow-y-auto">
           <Routes>
             <Route path="/" element={<ImpactBoard />} />
-            <Route path="/calendar" element={<Calendar />} />{" "}
-            {/* <-- USAMOS EL COMPONENTE REAL AQUÍ */}
-            <Route path="/audit" element={<Auditoria />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/audit" element={<AuditBoard />} />{" "}
+            {/* <-- ACTUALIZADO */}
           </Routes>
         </main>
       </div>
