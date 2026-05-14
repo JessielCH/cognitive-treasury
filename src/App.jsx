@@ -1,22 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import ImpactBoard from "./components/ImpactBoard";
+import Calendar from "./components/Calendar"; // <-- IMPORTACIÓN DEL COMPONENTE REAL
 
-// Componentes Placeholder (los desarrollaremos en el siguiente paso)
-const Dashboard = () => (
-  <div className="p-4">
-    <h1 className="text-2xl font-bold">Panel de Proyecciones (Impact Board)</h1>
-    <p>Visualización PCA y What-If</p>
-  </div>
-);
-const Calendar = () => (
-  <div className="p-4">
-    <h1 className="text-2xl font-bold">Calendario Interactivo</h1>
-    <p>Motor de recolección RLHF (Arrastrar y Soltar)</p>
-  </div>
-);
+// Mantenemos Auditoria como placeholder hasta la Fase 3
 const Auditoria = () => (
-  <div className="p-4">
+  <div className="p-8">
     <h1 className="text-2xl font-bold">Trazabilidad de IA</h1>
-    <p>Detección de Pagos Emergentes (DBSCAN)</p>
+    <p>En desarrollo (Fase 3)...</p>
   </div>
 );
 
@@ -24,38 +14,39 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-50 text-gray-900 font-sans flex">
-        {/* Sidebar de Navegación Lateral */}
-        <aside className="w-64 bg-slate-900 text-white p-6">
-          <h2 className="text-xl font-extrabold mb-8 text-blue-400">
+        {/* Barra Lateral (Sidebar) */}
+        <aside className="w-64 bg-slate-900 text-white p-6 shadow-xl z-10">
+          <h2 className="text-xl font-extrabold mb-8 text-blue-400 tracking-tight">
             Cognitive Treasury
           </h2>
-          <nav className="space-y-4">
+          <nav className="space-y-3">
             <Link
               to="/"
-              className="block hover:text-blue-300 transition-colors"
+              className="block py-2 px-4 rounded hover:bg-slate-800 hover:text-blue-300 transition-all"
             >
               Dashboard Proyectivo
             </Link>
             <Link
               to="/calendar"
-              className="block hover:text-blue-300 transition-colors"
+              className="block py-2 px-4 rounded hover:bg-slate-800 hover:text-blue-300 transition-all"
             >
               Calendario de Pagos
             </Link>
             <Link
               to="/audit"
-              className="block hover:text-blue-300 transition-colors"
+              className="block py-2 px-4 rounded hover:bg-slate-800 hover:text-blue-300 transition-all"
             >
               Auditoría y Clustering
             </Link>
           </nav>
         </aside>
 
-        {/* Área Principal de Contenido */}
-        <main className="flex-1 bg-white shadow-inner">
+        {/* Área Principal */}
+        <main className="flex-1 bg-gray-50 overflow-y-auto">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/" element={<ImpactBoard />} />
+            <Route path="/calendar" element={<Calendar />} />{" "}
+            {/* <-- USAMOS EL COMPONENTE REAL AQUÍ */}
             <Route path="/audit" element={<Auditoria />} />
           </Routes>
         </main>
