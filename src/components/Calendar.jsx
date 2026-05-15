@@ -4,6 +4,7 @@ import {
   GripVertical,
   AlertTriangle,
 } from "lucide-react";
+import Chatbot from "./Chatbot"; // <-- Importamos el Copiloto IA
 
 const Calendar = () => {
   // Estado para las facturas distribuidas por días de la semana
@@ -103,7 +104,7 @@ const Calendar = () => {
     return <div className="p-8 text-gray-500">Cargando calendario...</div>;
 
   return (
-    <div className="p-8">
+    <div className="p-8 relative">
       <div className="flex items-center gap-3 mb-8 border-b pb-4">
         <CalendarIcon className="w-8 h-8 text-blue-600" />
         <h1 className="text-3xl font-bold text-gray-800">
@@ -167,6 +168,9 @@ const Calendar = () => {
           </div>
         ))}
       </div>
+
+      {/* --- INTEGRACIÓN DEL COPILOTO IA --- */}
+      <Chatbot schedule={schedule} />
     </div>
   );
 };

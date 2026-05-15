@@ -2,8 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from .multivariate import generate_synthetic_data, calculate_pca_urgency
-from .rlhf_engine import optimize_preferences, get_current_weights # <-- NUEVA IMPORTACIÓN
-from .clustering import detect_anomalies # <-- NUEVA IMPORTACIÓN
+from .rlhf_engine import optimize_preferences, get_current_weights 
+from .clustering import detect_anomalies 
+from .chatbot import ask_treasury_copilot # <-- NUEVA IMPORTACIÓN DEL CHATBOT
 
 app = FastAPI(title="Cognitive Treasury API", version="1.0")
 
@@ -19,6 +20,11 @@ class PaymentScenario(BaseModel):
     scenario_id: str
     total_amount: float
     urgency_score: float
+
+# Modelo Pydantic para recibir el chat
+class ChatRequest(BaseModel):
+    message: str
+    calendar_state: dict
 
 @app.get("/")
 def read_root():
@@ -52,6 +58,7 @@ def capture_decision_footprint(decision_data: dict):
         "vector_recorded": True,
         "new_policy": new_weights
     }
+
 # --- RUTA PARA AUDITORÍA Y CLUSTERING ---
 @app.get("/api/audit-anomalies")
 def get_audit_anomalies():
@@ -64,3 +71,10 @@ def get_audit_anomalies():
         "clustering": resultados,
         "current_policy_weights": pesos_actuales
     }
+
+# --- RUTA PARA EL COPILOTO (GEMINI) ---
+@app.post("/api/chat")
+def chat_with_copilot(request: ChatRequest):
+    """Endpoint para el asistente virtual usando Gemini."""
+    respuesta = ask_treasury_copilot(request.message, request.calendar_state)
+    return {"reply": respuesta}
