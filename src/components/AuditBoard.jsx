@@ -6,7 +6,8 @@ const AuditBoard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("api/audit-anomalies")
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+    fetch(`${API_URL}/api/audit-anomalies`)
       .then((res) => res.json())
       .then((data) => {
         setAuditData(data);

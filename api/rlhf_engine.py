@@ -1,20 +1,42 @@
 import json
 import os
+from pathlib import Path
 
-WEIGHTS_FILE = "api/rlhf_weights.json"
+# Configurar la ruta del archivo de pesos
+# En Railway, se recomienda usar un volumen montado en /app/api/data
+# En desarrollo local, usará api/data/rlhf_weights.json
+WEIGHTS_DIR = os.getenv("WEIGHTS_STORAGE_PATH", os.path.join("api", "data"))
+if not isinstance(WEIGHTS_DIR, str):
+    WEIGHTS_DIR = os.path.dirname(WEIGHTS_DIR)
+else:
+    WEIGHTS_DIR = os.path.dirname(WEIGHTS_DIR) if WEIGHTS_DIR.endswith('.json') else WEIGHTS_DIR
+
+# Asegurar que la carpeta existe
+os.makedirs(WEIGHTS_DIR, exist_ok=True)
+
+WEIGHTS_FILE = os.path.join(WEIGHTS_DIR, "rlhf_weights.json")
 
 def get_current_weights():
     """Obtiene los pesos actuales aprendidos del gerente."""
-    if os.path.exists(WEIGHTS_FILE):
-        with open(WEIGHTS_FILE, "r") as f:
-            return json.load(f)
+    try:
+        if os.path.exists(WEIGHTS_FILE):
+            with open(WEIGHTS_FILE, "r") as f:
+                return json.load(f)
+    except (json.JSONDecodeError, IOError) as e:
+        print(f"⚠️  Error al leer {WEIGHTS_FILE}: {e}. Usando pesos por defecto.")
+    
     # Pesos base iniciales (Equitativos)
     return {"monto": 1.0, "antiguedad_dias": 1.0, "criticidad_operativa": 1.0}
 
 def save_weights(weights):
     """Guarda la nueva política de pesos."""
-    with open(WEIGHTS_FILE, "w") as f:
-        json.dump(weights, f)
+    try:
+        os.makedirs(WEIGHTS_DIR, exist_ok=True)
+        with open(WEIGHTS_FILE, "w") as f:
+            json.dump(weights, f, indent=2)
+        print(f"✅ Pesos guardados en {WEIGHTS_FILE}")
+    except IOError as e:
+        print(f"❌ Error al guardar pesos: {e}")
 
 def optimize_preferences(feedback_data):
     """
