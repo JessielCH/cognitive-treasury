@@ -17,7 +17,7 @@ const ImpactBoard = () => {
 
   useEffect(() => {
     // Llamada al backend de FastAPI
-    fetch("http://localhost:8000/api/invoices")
+    fetch("api/invoices")
       .then((res) => res.json())
       .then((data) => {
         // Tomamos solo el top 10 más urgente para el gráfico
