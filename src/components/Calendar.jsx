@@ -20,7 +20,8 @@ const Calendar = () => {
 
   useEffect(() => {
     // 1. Cargamos las facturas del motor analítico
-    fetch("http://localhost:8000/api/invoices")
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+    fetch(`${API_URL}/api/invoices`)
       .then((res) => res.json())
       .then((data) => {
         const invoices = data.data.slice(0, 20); // Tomamos 20 para el demo
@@ -88,7 +89,8 @@ const Calendar = () => {
       };
 
       try {
-        await fetch("http://localhost:8000/api/capture-feedback", {
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+        await fetch(`${API_URL}/api/capture-feedback`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(feedbackPayload),
