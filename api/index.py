@@ -1,11 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from .multivariate import generate_synthetic_data, calculate_pca_urgency
-from .rlhf_engine import optimize_preferences, get_current_weights 
-from .clustering import detect_anomalies 
-from .chatbot import ask_treasury_copilot # <-- NUEVA IMPORTACIÓN DEL CHATBOT
+# api/index.py
 
+from multivariate import generate_synthetic_data, calculate_pca_urgency
+from rlhf_engine import optimize_preferences, get_current_weights
+from clustering import detect_anomalies
+from chatbot import ask_treasury_copilot
+# Si llegaste a crear predictive.py, inclúyelo también:
+# from predictive import generate_executive_summary
 app = FastAPI(title="Cognitive Treasury API", version="1.0")
 
 app.add_middleware(
