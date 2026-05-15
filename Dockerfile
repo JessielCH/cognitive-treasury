@@ -45,5 +45,5 @@ RUN mkdir -p /app/api/data
 # Exponer puerto
 EXPOSE 8000
 
-# Comando de inicio
-CMD ["uvicorn", "api.index:app", "--host", "0.0.0.0", "--port", "8000"]
+# Comando de inicio con expansión de variable de entorno
+CMD ["sh", "-c", "uvicorn api.index:app --host 0.0.0.0 --port ${PORT:-8000}"]
