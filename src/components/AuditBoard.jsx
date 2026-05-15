@@ -6,7 +6,7 @@ const AuditBoard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/audit-anomalies")
+    fetch("api/audit-anomalies")
       .then((res) => res.json())
       .then((data) => {
         setAuditData(data);
